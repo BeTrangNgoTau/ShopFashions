@@ -1,5 +1,7 @@
 package net.example.demo.controller;
 
+import net.example.demo.repository.ProductRepository;
+
 import net.example.demo.entity.Product;
 import net.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import java.util.List;
 public class ProductController {
     @Autowired
     private ProductService productService;
+    private ProductRepository productRepository;
+
 
     @PostMapping
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
@@ -41,5 +45,13 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/search")
+    public List<Product> searchProducts(@RequestParam String query) {
+        return productService.searchProducts(query);
+    }
+    @GetMapping("/sort")
+    public List<Product> sortProducts(@RequestParam String sortBy) {
+        return productService.sortProducts(sortBy);
     }
 }

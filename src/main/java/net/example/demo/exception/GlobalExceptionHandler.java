@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(AccountNotFoundException.class)
 
+    @ExceptionHandler(AccountNotFoundException.class)
     public ResponseEntity<String> handleResourceNotFoundException(AccountNotFoundException ex) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
@@ -19,4 +19,3 @@ public class GlobalExceptionHandler {
                 .body("An error occurred: " + ex.getMessage());
     }
 }
-

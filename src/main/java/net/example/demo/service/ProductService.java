@@ -5,6 +5,7 @@ import net.example.demo.exception.ProductNotFoundException;
 import net.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -45,5 +46,19 @@ public class ProductService {
     public void deleteProduct(Long id) {
         Product product = getProductById(id);
         productRepository.delete(product);
+    }
+    public List<Product> filterProducts(String name, Double minPrice, Double maxPrice, Boolean active, String size, String color) {
+        if (name != null && minPrice != null && maxPrice != null) {
+            return productRepository.findByNameContainingAndPriceBetweenAndActive(name, minPrice, maxPrice, active);
+        } else if (size != null && color != null) {
+            return productRepository.findBySizeAndColorAndActive(size, color, active);
+        }
+        return productRepository.findAll();
+    }
+    public List<Product> searchProducts(String query) {
+        return productRepository.findByNameContainingOrDescriptionContaining(query, query);
+    }
+    public List<Product> sortProducts(String sortBy) {
+        return productRepository.findAll(Sort.by(sortBy));
     }
 }
